@@ -1,5 +1,7 @@
 package net.dervism.trafokanten.lcd;
 
+import java.util.Map;
+
 import net.dervism.trafokanten.com.SerialWriter;
 
 /**
@@ -42,6 +44,12 @@ public class LCDCommander extends SerialWriter {
 		write(character);
 	}
 	
+	/**
+	 * Sets the given text in scrolling marquee buffer.
+	 * 
+	 * @param text The text to scroll. Should not be longer than 20 characters, characters above the limit will 
+	 * simply be ignored.
+	 */
 	public void setScrollingMarqueeText(String text) {
 	        int length = text.length();
 	        if (length > 20) length = 20;
@@ -99,6 +107,21 @@ public class LCDCommander extends SerialWriter {
 		write(scroll_step_size);
 		write(update_speed);
 	}
+	
+	/**
+         * Sets and activates some scrolling marquee text.
+         * 
+         * @param text The text to scroll. Should not be longer than 20 characters.
+         * @param row Which line the text will be scrolled on. Lines are index from 0 -> 3.
+         * @param params You should provide params 'scroll_step_size' and 'update_speed'. Default values are 5 & 60.
+         */
+        public void setScrollingMarqueeTextAndActivate(String text, int row, Map<String, Integer> params) {
+            clearDisplay();
+            setScrollingMarqueeText(text);
+            enableScrollingMarquee(row, params.get("scroll_step_size") != null ? params.get("scroll_step_size") : 5, 
+                                        params.get("update_speed") != null ? params.get("update_speed") : 60);
+            write(HIDE_CURSOR);
+        }
 	
 	/**
 	 * Moves cursor to the top left character position. No data is changed. Identical to SET_CURSOR_POS=0,0.
@@ -280,7 +303,6 @@ public class LCDCommander extends SerialWriter {
 		setCursorAt(ROW1);
 		write("Trafokanten starting");
 		setCursorAt(ROW2);
-//		writeASCIISymbol(2, 160); // dollar-tegn
 		try {
 			Thread.sleep(4000);
 		} catch (InterruptedException e) {}
