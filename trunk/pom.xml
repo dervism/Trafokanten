@@ -36,7 +36,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>net.dervism.Trafokanten</mainClass>
+                            <mainClass>net.dervism.trafokanten.main.Trafokanten</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
