@@ -1,5 +1,11 @@
 package net.dervism.trafokanten.ws;
 
+/**
+ * 
+ * @author Dervis M
+ *
+ */
+
 public class Platform {
 	
 	private Trafikanten info;

@@ -7,6 +7,12 @@ import gnu.io.PortInUseException;
 import java.util.Enumeration;
 import java.util.HashSet;
 
+/**
+ * 
+ * @author Dervis M & CrystalFontz.com
+ *
+ */
+
 public class SerialUtils {
 	
 	public static void listPorts()
