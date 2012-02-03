@@ -4,6 +4,12 @@ import java.util.concurrent.TimeUnit;
 
 import net.dervism.trafokanten.com.SerialUtils;
 
+/**
+ * 
+ * @author Dervis M
+ *
+ */
+
 public class Departure {
 
     private String destinationName;

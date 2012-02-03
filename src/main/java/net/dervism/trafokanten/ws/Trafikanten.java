@@ -17,7 +17,7 @@ import org.json.simple.JSONValue;
  * Bruk "http://api-test.trafikanten.no/Place/FindPlaces/montebello" for �
  * s�ke etter en destinasjon.
  * 
- * @author Dervis M
+ * @author Dervis M & JTB
  * 
  */
 

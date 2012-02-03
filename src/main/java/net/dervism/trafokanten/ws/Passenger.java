@@ -8,6 +8,12 @@ import java.util.Observer;
 import net.dervism.trafokanten.com.SerialUtils;
 import net.dervism.trafokanten.lcd.LCDCommander;
 
+/**
+ * 
+ * @author Dervis M
+ *
+ */
+
 public class Passenger implements Observer{
 	
 	private LCDCommander lcd;
