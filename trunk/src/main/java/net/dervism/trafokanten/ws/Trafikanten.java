@@ -29,7 +29,6 @@ public class Trafikanten extends Observable implements Runnable {
     public void run() {
         while (true) {
             try {
-
                 URL webservice = new URL("http://api-test.trafikanten.no/RealTime/GetRealTimeData/3012575");
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(webservice.openStream()));
@@ -53,15 +52,12 @@ public class Trafikanten extends Observable implements Runnable {
                             departures.add(new Departure(destinationName, time));
                         }
                     }
-
                 } finally {
                     in.close();
                 }
-
                 notifyListeners();
                 departures.clear();
                 Thread.sleep(10000);
-
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (Exception e) {

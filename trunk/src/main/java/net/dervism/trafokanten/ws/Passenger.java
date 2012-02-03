@@ -1,9 +1,7 @@
 package net.dervism.trafokanten.ws;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -14,10 +12,9 @@ public class Passenger implements Observer{
 	
 	private LCDCommander lcd;
 	
-	private Map<Integer, Integer> current;
+	private long previous = 99;
 	
 	public Passenger() {
-	    current = new HashMap<Integer, Integer>();
 		lcd = new LCDCommander();
 		try {
 			lcd.connect();
@@ -41,45 +38,37 @@ public class Passenger implements Observer{
 		
 		top = departures.size() < 3 ? departures.subList(0, departures.size()) : departures.subList(0, 3);
 		
-		if (departures.size() > 3 )rest = departures.subList(3, departures.size());
+		if (departures.size() > 3 ) rest = departures.subList(3, departures.size());
 		
-		if (isChanged(0, (int)top.get(0).getMinute())) {
+		long current = top.get(0).getMinute();
+		boolean changed = isChanged(current);
+		
+		if (changed) {
+		    previous = current > 0 ? current : 99;
 		    lcd.clearDisplay();
 		    int row = 0;
-	            for (Departure departure : top) {
-	                lcd.setCursorAt(row);
-                        if (!isNow(departure)) {
-                           lcd.write(departure.toDestinationWithMinuteString());
-                        }
-                        else {
-                            lcd.write(departure.getDestinationName());
-                            lcd.write(SerialUtils.spacer);
-                            lcd.write("n");
-                            lcd.writeASCIISymbol(15, 160);
-                        }
-                        row++;
-	            }
-		}
-		
+		    for (Departure departure : top) {
+		        lcd.setCursorAt(row);
+		        if (!isNow(departure)) {
+		            lcd.write(departure.toDestinationWithMinuteString());
+		        }
+		        else {
+		            lcd.write(departure.getDestinationName());
+		            lcd.write(SerialUtils.spacer);
+		            lcd.write("n");
+		            lcd.writeASCIISymbol(15, 160);
+		        }
+		        row++;
+		    }
+		}		
 	}
 	
 	private boolean isNow(Departure departure) {
-	    boolean now = (departure.getMinute() == 0) && departure.getSecond() < 30;
-	     if (now) current.clear();
-	     return now;
+	    return (departure.getMinute() == 0) && departure.getSecond() < 30;
 	}
 	
-	private boolean isChanged(int row, int minute) {
-	    if (current.containsKey(row)) {
-	        if (current.get(row) > minute) {
-	            current.put(row, minute);
-	            return true;
-	        }
-	    } else {
-	        current.put(row, minute);
-                return true;
-	    }
-	    return false;
+	private boolean isChanged(long current) {
+	    return current < previous;
 	}
 	
 	private void debug(List<Departure> departures) {
