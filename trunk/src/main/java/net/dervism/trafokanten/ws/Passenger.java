@@ -37,35 +37,35 @@ public class Passenger implements Observer{
 		if (departures.isEmpty()) {
 			lcd.clearDisplay();
 			lcd.write("Ingen avganger.");
-		}
-		
-		List<Departure> top = new LinkedList<Departure>();
-		List<Departure> rest = new LinkedList<Departure>();
-		
-		top = departures.size() < 3 ? departures.subList(0, departures.size()) : departures.subList(0, 3);
-		
-		if (departures.size() > 3 ) rest = departures.subList(3, departures.size());
-		
-		long current = top.get(0).getMinute();
-		boolean changed = isChanged(current);
-		
-		if (changed) {
-		    previous = current > 0 ? current : 99;
-		    lcd.clearDisplay();
-		    int row = 0;
-		    for (Departure departure : top) {
-		        lcd.setCursorAt(row);
-		        if (!isNow(departure)) {
-		            lcd.write(departure.toDestinationWithMinuteString());
-		        }
-		        else {
-		            lcd.write(departure.getDestinationName());
-		            lcd.write(SerialUtils.spacer);
-		            lcd.write("n");
-		            lcd.writeASCIISymbol(15, 160);
-		        }
-		        row++;
-		    }
+		} else {
+		    List<Departure> top = new LinkedList<Departure>();
+	                List<Departure> rest = new LinkedList<Departure>();
+	                
+	                top = departures.size() < 3 ? departures.subList(0, departures.size()) : departures.subList(0, 3);
+	                
+	                if (departures.size() > 3 ) rest = departures.subList(3, departures.size());
+	                
+	                long current = top.get(0).getMinute();
+	                boolean changed = isChanged(current);
+	                
+	                if (changed) {
+	                    previous = current > 0 ? current : 99;
+	                    lcd.clearDisplay();
+	                    int row = 0;
+	                    for (Departure departure : top) {
+	                        lcd.setCursorAt(row);
+	                        if (!isNow(departure)) {
+	                            lcd.write(departure.toDestinationWithMinuteString());
+	                        }
+	                        else {
+	                            lcd.write(departure.getDestinationName());
+	                            lcd.write(SerialUtils.spacer);
+	                            lcd.write("n");
+	                            lcd.writeASCIISymbol(15, 160);
+	                        }
+	                        row++;
+	                    }
+	                }   
 		}		
 	}
 	
