@@ -1,5 +1,6 @@
 package net.dervism.trafokanten.ws;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -19,6 +20,8 @@ public class Passenger implements Observer{
 	private LCDCommander lcd;
 	
 	private long previous = 99;
+	
+	private boolean marquee = false;
 	
 	public Passenger() {
 		lcd = new LCDCommander();
@@ -55,17 +58,23 @@ public class Passenger implements Observer{
 	                    for (Departure departure : top) {
 	                        lcd.setCursorAt(row);
 	                        if (!isNow(departure)) {
-	                            lcd.write(departure.toDestinationWithMinuteString());
+	                            lcd.write(departure.toDestinationWithAutoformattedMinuteString());
 	                        }
 	                        else {
-	                            lcd.write(departure.getDestinationName());
-	                            lcd.write(SerialUtils.spacer);
-	                            lcd.write("n");
+	                            lcd.write(departure.toDepartingDestination());
 	                            lcd.writeASCIISymbol(15, 160);
 	                        }
 	                        row++;
 	                    }
-	                }   
+	                    if (marquee){
+	                        String restStr = "";
+	                        for (Departure departure : rest) {
+	                            restStr += departure.toDestinationWithShortMinuteString() + " ";
+	                        }
+	                        lcd.setScrollingMarqueeText(restStr);
+	                        lcd.enableScrollingMarquee(3, 5, 30);	                        
+	                    }
+	                }
 		}		
 	}
 	
@@ -75,15 +84,6 @@ public class Passenger implements Observer{
 	
 	private boolean isChanged(long current) {
 	    return current < previous;
-	}
-	
-	private void debug(List<Departure> departures) {
-	    for (Departure departure : departures) {
-                System.out.println(departure.toDestinationWithMinuteString());
-            }
-	}
-	private void debug(String s) {
-	    System.out.println(s);
 	}
 
 }
