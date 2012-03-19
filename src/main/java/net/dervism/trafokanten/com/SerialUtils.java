@@ -70,4 +70,19 @@ public class SerialUtils {
     }
     
     public static final String spacer = "     ";
+    
+    public static String tabulator(int len) {
+        String ret = "";
+        if (len > 0) for (int i = 0; i < len; i++) ret += " ";
+        return ret;
+    }
+    
+    public static String replaceNoneAsciiChars(String str) {
+        String ret = str;
+        if (str.contains("å")) ret = ret.replace('å', 'a');
+        if (str.contains("Å")) ret = ret.replace('Å', 'A');
+        if (str.contains("ø")) ret = ret.replace('ø', 'o');
+        if (str.contains("Ø")) ret = ret.replace('Ø', 'O');
+        return ret;
+    }
 }

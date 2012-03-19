@@ -24,12 +24,27 @@ import org.json.simple.JSONValue;
 public class Trafikanten extends Observable implements Runnable {
 
     private final List<Departure> departures = Collections.synchronizedList(new LinkedList<Departure>());
-
+    
+    private class DestinationNames {
+        static final String TØYEN =                "3010600";
+        static final String GRØNLAND =             "3010610";
+        static final String JERNEBANETORGET =      "3010011";
+        static final String STORTINGET =           "3010020";
+        static final String NATIONALTHEATRET =     "3010031";
+        static final String MAJORSTUEN =           "3010200";
+        static final String MONTEBELLO =           "3012575";
+    }
+    
+    private class DeparturePlatforms {
+        static final String DEPARTUREPLATFORM_EAST =       "1";
+        static final String DEPARTUREPLATFORM_WEST =       "2";
+    }
+    
     @Override
     public void run() {
         while (true) {
             try {
-                URL webservice = new URL("http://api-test.trafikanten.no/RealTime/GetRealTimeData/3012575");
+                URL webservice = new URL("http://api-test.trafikanten.no/RealTime/GetRealTimeData/"+DestinationNames.MONTEBELLO);
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(webservice.openStream()));
                 try {
@@ -46,10 +61,11 @@ public class Trafikanten extends Observable implements Runnable {
                     for (Object o : array) {
                         JSONObject jsonObject = (JSONObject) o;
                         if (jsonObject.containsKey("DestinationName") &&
-                                jsonObject.get("DeparturePlatformName").equals("1")) {
+                                jsonObject.get("DeparturePlatformName").equals(DeparturePlatforms.DEPARTUREPLATFORM_EAST)) {
                             String destinationName = jsonObject.get("DestinationName").toString();
+                            String publishedLineName = jsonObject.get("PublishedLineName").toString();
                             Long time = Long.valueOf(jsonObject.get("ExpectedDepartureTime").toString().substring(6).substring(0, 13));
-                            departures.add(new Departure(destinationName, time));
+                            departures.add(new Departure(publishedLineName, destinationName, time));
                         }
                     }
                 } finally {
