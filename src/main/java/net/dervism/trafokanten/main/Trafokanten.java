@@ -12,7 +12,6 @@ public class Trafokanten {
 
 
     public static void main(String[] args) throws Exception {
-
         String proxy = System.getProperty("proxy");
         if (proxy != null) {
             System.getProperties().put("proxySet", "true");
@@ -22,6 +21,5 @@ public class Trafokanten {
 
         Platform p = new Platform();
         p.start();
-
     }
 }
