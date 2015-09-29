@@ -3,11 +3,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-	
-	<description>Viser info fra Trafikanten på en CrystalFontz CFA-634 LCD-skjerm.</description>
+    <description>Viser info fra Trafikanten på en CrystalFontz CFA-634 LCD-skjerm.</description>
+    <name>Trafokanten</name>
 
     <groupId>net.dervism</groupId>
-    <artifactId>Trafokanten</artifactId>
+    <artifactId>trafokanten</artifactId>
     <version>1.0</version>
      <dependencies>
 		<dependency>
